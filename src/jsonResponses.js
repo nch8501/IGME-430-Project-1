@@ -16,14 +16,38 @@ const respondToHEAD = (request, response, status) => {
 
 // function to retrieve a list of reviews
 const getReviewList = (request, response, action) => {
-
+  //check if HEAD request
+  if(action === 'HEAD'){
+    return respondToHEAD(request, response, 200);
+  }
+  
+  //create response object
+  const responseJSON = {
+    reviews,
+  };
+  
+  return respondToGET(request, response, 200, responseJSON);
 
 };
 
 // function to retrieve a specific review
 const getReview = (request, response, review, action) => {
-
-
+  //check if HEAD request
+  if(action === 'HEAD'){
+    return respondToHEAD(request, response, 200);
+  }
+  
+  //create response object
+  const responseJSON = {
+    reviews,
+  };
+  
+  //responseJSON.reviews = reviews[review];
+  
+  
+  return respondToGET(request, response, 200, responseJSON);
+  
+  
 };
 
 // function to add review
@@ -68,8 +92,22 @@ const addReview = (request, response, body) => {
   return respondToHEAD(request, response, responseCode);
 };
 
+const notReal = (request, response, action) => {
+  if (action === 'HEAD') {
+    return respondToHEAD(request, response, 404);
+  }
+
+  const responseJSONObject = {
+    id: 'notFound',
+    message: 'The resource you were looking for was not found',
+  };
+
+  return respondToGET(request, response, 404, responseJSONObject);
+};
+
 
 module.exports = {
+  notReal,
   getReviewList,
   getReview,
   addReview,

@@ -11,7 +11,10 @@ const urlStruct = {
   '/': htmlHandler.getIndex,
   '/style.css': htmlHandler.getCSS,
   '/bundle.js': htmlHandler.getBundle,
+  'notReal': jsonHandler.notReal,
   '/addReview': jsonHandler.addReview,
+  '/getReviewList': jsonHandler.getReviewList,
+  '/getReview': jsonHandler.getReview,
 };
 
 // handle POST requests
@@ -60,6 +63,17 @@ const onRequest = (request, response) => {
       if (urlStruct[parsedUrl.pathname]) {
         urlStruct[parsedUrl.pathname](request, response, params);
       }
+      else{
+        jsonHandler.notReal(request, response, params);
+      }
+      break;
+    case 'HEAD':
+      if (urlStruct[parsedUrl.pathname]) {
+        urlStruct[parsedUrl.pathname](request, response, params);
+      }
+      else{
+        jsonHandler.notReal(request, response, params);
+      }
       break;
     case 'POST':
       if (parsedUrl.pathname === '/addReview') {
@@ -67,6 +81,7 @@ const onRequest = (request, response) => {
       }
       break;
     default:
+      jsonHandler.notReal(request, response, params);
       break;
   }
 };
