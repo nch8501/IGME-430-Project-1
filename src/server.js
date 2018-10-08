@@ -11,7 +11,7 @@ const urlStruct = {
   '/': htmlHandler.getIndex,
   '/style.css': htmlHandler.getCSS,
   '/bundle.js': htmlHandler.getBundle,
-  'notReal': jsonHandler.notReal,
+  notReal: jsonHandler.notReal,
   '/addReview': jsonHandler.addReview,
   '/getReviewList': jsonHandler.getReviewList,
   '/getReview': jsonHandler.getReview,
@@ -62,16 +62,14 @@ const onRequest = (request, response) => {
     case 'GET':
       if (urlStruct[parsedUrl.pathname]) {
         urlStruct[parsedUrl.pathname](request, response, params);
-      }
-      else{
+      } else {
         jsonHandler.notReal(request, response, params);
       }
       break;
     case 'HEAD':
       if (urlStruct[parsedUrl.pathname]) {
         urlStruct[parsedUrl.pathname](request, response, params);
-      }
-      else{
+      } else {
         jsonHandler.notReal(request, response, params);
       }
       break;

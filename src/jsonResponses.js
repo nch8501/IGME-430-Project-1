@@ -16,38 +16,35 @@ const respondToHEAD = (request, response, status) => {
 
 // function to retrieve a list of reviews
 const getReviewList = (request, response, action) => {
-  //check if HEAD request
-  if(action === 'HEAD'){
+  // check if HEAD request
+  if (action === 'HEAD') {
     return respondToHEAD(request, response, 200);
   }
-  
-  //create response object
+
+  // create response object
   const responseJSON = {
     reviews,
   };
-  
-  return respondToGET(request, response, 200, responseJSON);
 
+  return respondToGET(request, response, 200, responseJSON);
 };
 
 // function to retrieve a specific review
 const getReview = (request, response, review, action) => {
-  //check if HEAD request
-  if(action === 'HEAD'){
+  // check if HEAD request
+  if (action === 'HEAD') {
     return respondToHEAD(request, response, 200);
   }
-  
-  //create response object
+
+  // create response object
   const responseJSON = {
     reviews,
   };
-  
-  //responseJSON.reviews = reviews[review];
-  
-  
+
+  // responseJSON.reviews = reviews[review];
+
+
   return respondToGET(request, response, 200, responseJSON);
-  
-  
 };
 
 // function to add review

@@ -43,8 +43,26 @@ const handleResponse = xhr => {
   content.appendChild(p);
 };
 
+const handleReviewList = xhr => {
+
+  if (xhr.response) {
+    const reviewListSection = document.querySelector('#reviewListSection');
+
+    const obj = JSON.parse(xhr.response);
+    //check if any reviews exist
+    if (obj.reviews) {
+      for (let key in obj.reviews) {
+        if (obj.reviews.hasOwnProperty(key)) {
+          console.dir(`Game Name: ${obj.reviews[key].name}`);
+          console.dir(`Game Score: ${obj.reviews[key].score}`);
+        }
+      }
+    }
+  }
+};
+
 const sendReview = (e, reviewForm) => {
-  console.dir("Sending review");
+
   //grab the form's action and method
   const reviewAction = reviewForm.getAttribute('action');
   const reviewMethod = reviewForm.getAttribute('method');
@@ -79,15 +97,45 @@ const sendReview = (e, reviewForm) => {
   return false;
 };
 
+const populateReviewList = e => {
+  console.dir("Populating List");
+
+  //create new Ajax request
+  const xhr = new XMLHttpRequest();
+  //set method and url
+  xhr.open('get', '/getReviewList');
+
+  //set our requested response type in hopes of a JSON response
+  xhr.setRequestHeader('Accept', 'application/json');
+
+  //set our function to handle the response
+  xhr.onload = () => handleReviewList(xhr);
+
+  //send our request
+  xhr.send();
+  //return false to prevent the browser from trying to change page
+  return false;
+};
+
 const init = () => {
   //grab form
   const reviewForm = document.querySelector('#reviewForm');
+
+  const reviewListButton = document.querySelector('#reviewListButton');
+  const refreshReviewList = e => populateReviewList(e);
+  reviewListButton.addEventListener('click', refreshReviewList);
 
   //create handler
   const addReview = e => sendReview(e, reviewForm);
 
   //attach submit event
   reviewForm.addEventListener('submit', addReview);
+
+  console.dir("Setting Interval");
+  setInterval(function () {
+    populateReviewList();
+  }, 5000);
+  //populateReviewList();
 };
 
 window.onload = init;

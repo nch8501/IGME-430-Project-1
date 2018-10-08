@@ -29,6 +29,12 @@
   <script src="bundle.js"> </script>
 </head>
 <body>
+  <section id="reviewSection">
+    <input id="reviewListButton" type="button" value="Refresh Review List">
+  </section>
+  <section id="reviewListSection"></section>
+  
+  
   <section id="top">
     <form id="reviewForm" action="/addReview" method="post">
       <h1>Game Name</h1>
@@ -41,11 +47,8 @@
       <input id="scoreField" type="number" min="0" max="10" step=".25" name="score">
       <p></p>
       <input type="submit" value="Add Game Review">  
-    </form>
-    
-    
+    </form>  
   </section>
-  <section id="content">
-  </section>
+  
 </body>
 </html>
