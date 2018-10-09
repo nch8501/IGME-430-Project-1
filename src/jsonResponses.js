@@ -35,6 +35,8 @@ const getReview = (request, response, review, action) => {
   if (action === 'HEAD') {
     return respondToHEAD(request, response, 200);
   }
+  console.dir(review);
+  console.dir(action);
 
   // create response object
   const responseJSON = {

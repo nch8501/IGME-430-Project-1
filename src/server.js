@@ -57,6 +57,7 @@ const handlePost = (request, response) => {
 const onRequest = (request, response) => {
   const parsedUrl = url.parse(request.url);
   const params = query.parse(parsedUrl.query);
+  console.dir(params);
 
   switch (request.method) {
     case 'GET':
