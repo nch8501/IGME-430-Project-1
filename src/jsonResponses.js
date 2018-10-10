@@ -31,22 +31,36 @@ const getReviewList = (request, response, action) => {
 
 // function to retrieve a specific review
 const getReview = (request, response, review, action) => {
+  //check if review exists in server
+  if(reviews[review.reviewName]){
+    // check if HEAD request
+    if (action === 'HEAD') {
+      return respondToHEAD(request, response, 200);
+    }
+    
+    // create response object
+    const responseJSON = {
+    };
+
+    //get requested review
+    responseJSON.review = reviews[review.reviewName];
+
+    return respondToGET(request, response, 200, responseJSON); 
+  }
+  
   // check if HEAD request
   if (action === 'HEAD') {
-    return respondToHEAD(request, response, 200);
+    return respondToHEAD(request, response, 404);
   }
-  console.dir(review);
-  console.dir(action);
 
   // create response object
   const responseJSON = {
-    reviews,
   };
 
-  // responseJSON.reviews = reviews[review];
+  responseJSON.message = 'The review was not found on the server';
+  responseJSON.id = 'reviewNotFound';
 
-
-  return respondToGET(request, response, 200, responseJSON);
+  return respondToGET(request, response, 404, responseJSON);
 };
 
 // function to add review

@@ -82,19 +82,50 @@ const handleSentReview = (xhr) =>{
   //append elements to confirmation section
   confirmation.appendChild(h1);
   confirmation.appendChild(p);
+  
+  //refresh review list
+  getReviewList();
+  
 };
 
-
+//handles displaying the chosen review
 const displayReview = (xhr) =>{
-  console.dir("Handling Displayed Review");
+  //get review section
+  const reviewSection = document.querySelector('#reviewSection');
+  
+  //check if object should be parsed
+  if(xhr.response){
+    //parse object
+    const obj = JSON.parse(xhr.response);
+    
+    //create tags
+    const h1 = document.createElement('h1');
+    const genre = document.createElement('p');
+    const body = document.createElement('p');
+    const score = document.createElement('p');
+    
+    //check if there is a message to display
+    if(obj.message){
+      h1.innerHTML = `Message: ${obj.message}`;
+    }
+    
+    //check if there is a review to display
+    if(obj.review){
+      h1.innerHTML = obj.review.name;
+      genre.innerHTML = obj.review.genre;
+      body.innerHTML = obj.review.review;
+      score.innerHTML = obj.review.score;
+    }
+    //clear reviewSection
+    reviewSection.innerHTML = "";
+    
+    //append tags
+    reviewSection.appendChild(h1);
+    reviewSection.appendChild(genre);
+    reviewSection.appendChild(body);
+    reviewSection.appendChild(score);
+  }
 };
-
-
-
-
-
-
-
 
 //method called after clicking on a review, used to get the review information from the server
 const getReview = (reviewInfo) =>{
@@ -102,7 +133,7 @@ const getReview = (reviewInfo) =>{
   const reviewAction = reviewInfo.getAttribute('action');
   const reviewMethod = reviewInfo.getAttribute('method');
   //set reviewName as parameter to pass to url
-  const reviewName = `reviewName=${reviewInfo.value}}`;
+  const reviewName = `reviewName=${reviewInfo.value}`;
    
   //create new Ajax request
   const xhr = new XMLHttpRequest();
@@ -164,7 +195,6 @@ const displayReviewList = (xhr) =>{
 
 //method to send the review to the server
 const sendReview = (e, reviewForm) =>{
-
   //grab the form's action and method
   const reviewAction = reviewForm.getAttribute('action');
   const reviewMethod = reviewForm.getAttribute('method');
@@ -200,7 +230,7 @@ const sendReview = (e, reviewForm) =>{
 };
 
 //method to get the list of reviews from the server
-const getReviewList = (e) =>{  
+const getReviewList = () =>{  
   //create new Ajax request
   const xhr = new XMLHttpRequest();
   
@@ -225,16 +255,12 @@ const getReviewList = (e) =>{
 const init = () => {
   //grab review form
   const reviewForm = document.querySelector('#reviewForm');
-  //grab refresh review list button
-  const reviewListButton = document.querySelector('#reviewListButton');
   
-  //create handlers
+  //create handler
   const addReview = (e) => sendReview(e, reviewForm);
-  const refreshReviewList = (e) => getReviewList(e);
   
-  //attach events
+  //attach event
   reviewForm.addEventListener('submit', addReview);
-  reviewListButton.addEventListener('click', refreshReviewList);
   
   //set interval to regularly update list of reviews
   setInterval(function(){getReviewList();}, 10000);
