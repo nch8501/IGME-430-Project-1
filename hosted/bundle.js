@@ -3,70 +3,25 @@
     will convert this into ES5 and put it into the hosted folder.
 **/
 
-const handleResponse = xhr => {
-  //get content section
-  const content = document.querySelector('#content');
-  //create elements
-  const h1 = document.createElement('h1');
-  const p = document.createElement('p');
-
-  switch (xhr.status) {
-    case 200:
-      content.innerHTML = `<b>Success</b>`;
-      break;
-    case 201:
-      console.dir("Handled Create");
-      break;
-    case 204:
-      console.dir("Handled Update");
-      break;
-    case 400:
-      content.innerHTML = `<b>Bad Request</b>`;
-      break;
-    default:
-      content.innerHTML = `Error code not implemented by client.`;
-      break;
-  }
-  //check if object should be parsed
-  if (xhr.response) {
-    const obj = JSON.parse(xhr.response);
-    console.dir(obj);
-    //check if there is a message to display
-    if (obj.message) {
-      p.innerHTML = `Message: ${obj.message}`;
-    }
-  }
-  //clear content section
-  content.innerHTML = "";
-  //append elements to content section
-  content.appendChild(h1);
-  content.appendChild(p);
-};
-
 //handles what to do after the review has been set to the server
 const handleSentReview = xhr => {
-  //get confirmation section
-  const confirmation = document.querySelector('#confirmation');
-  //clear confirmation section
-  confirmation.innerHTML = "";
-
   //create elements
-  const h1 = document.createElement('h1');
-  const p = document.createElement('p');
+  let title = "";
+  let message = "";
 
   //handle status codes
   switch (xhr.status) {
     case 201:
-      h1.innerHTML = `<b>Review Submitted Successfully</b>`;
+      title = `Review Submitted Successfully`;
       break;
     case 204:
-      h1.innerHTML = `<b>Review Updated Successfully</b>`;
+      title = `Review Updated Successfully`;
       break;
     case 400:
-      h1.innerHTML = `<b>Bad Request</b>`;
+      title = `Bad Request`;
       break;
     default:
-      h1.innerHTML = `Error code not implemented by client.`;
+      title = `Error code not implemented by client.`;
       break;
   }
 
@@ -75,13 +30,12 @@ const handleSentReview = xhr => {
     const obj = JSON.parse(xhr.response);
     //check if there is a message to display
     if (obj.message) {
-      p.innerHTML = `Message: ${obj.message}`;
+      message = `Message: ${obj.message}`;
     }
   }
 
-  //append elements to confirmation section
-  confirmation.appendChild(h1);
-  confirmation.appendChild(p);
+  //send alert
+  alert(title + '\n' + message);
 
   //refresh review list
   getReviewList();
@@ -99,7 +53,7 @@ const displayReview = xhr => {
 
     //create tags
     const h1 = document.createElement('h1');
-    const genre = document.createElement('p');
+    const genre = document.createElement('h3');
     const body = document.createElement('p');
     const score = document.createElement('p');
 
@@ -111,9 +65,9 @@ const displayReview = xhr => {
     //check if there is a review to display
     if (obj.review) {
       h1.innerHTML = obj.review.name;
-      genre.innerHTML = obj.review.genre;
+      genre.innerHTML = `<b>Genre:</b> ${obj.review.genre}`;
       body.innerHTML = obj.review.review;
-      score.innerHTML = obj.review.score;
+      score.innerHTML = `<b>Score:</b> ${obj.review.score}`;
     }
     //clear reviewSection
     reviewSection.innerHTML = "";
@@ -172,7 +126,7 @@ const displayReviewList = xhr => {
           const p = document.createElement('p');
 
           //set tag's inner html
-          p.innerHTML = `Game Name: ${obj.reviews[key].name}  Genre: ${obj.reviews[key].genre}  Score: ${obj.reviews[key].score} Key: ${key}`;
+          p.innerHTML = obj.reviews[key].name;
 
           //set the value
           p.value = `${key}`;
@@ -260,6 +214,8 @@ const init = () => {
   //attach event
   reviewForm.addEventListener('submit', addReview);
 
+  //get any reviews on server
+  getReviewList();
   //set interval to regularly update list of reviews
   setInterval(function () {
     getReviewList();

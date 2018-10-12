@@ -31,23 +31,23 @@ const getReviewList = (request, response, action) => {
 
 // function to retrieve a specific review
 const getReview = (request, response, review, action) => {
-  //check if review exists in server
-  if(reviews[review.reviewName]){
+  // check if review exists in server
+  if (reviews[review.reviewName]) {
     // check if HEAD request
     if (action === 'HEAD') {
       return respondToHEAD(request, response, 200);
     }
-    
+
     // create response object
     const responseJSON = {
     };
 
-    //get requested review
+    // get requested review
     responseJSON.review = reviews[review.reviewName];
 
-    return respondToGET(request, response, 200, responseJSON); 
+    return respondToGET(request, response, 200, responseJSON);
   }
-  
+
   // check if HEAD request
   if (action === 'HEAD') {
     return respondToHEAD(request, response, 404);
@@ -65,7 +65,6 @@ const getReview = (request, response, review, action) => {
 
 // function to add review
 const addReview = (request, response, body) => {
-  console.dir('addReview');
   // default json message
   const responseJSON = {
     message: 'Game name, genre, review, and score are required',

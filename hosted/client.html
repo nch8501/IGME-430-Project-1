@@ -2,49 +2,38 @@
 <html lang="en">
 <head>
   <title>Our simple HTTP server</title>
-  <style>
-    html, body {
-        height: 100%;
-        width: 100%;
-        margin: 0;
-        padding: 0;
-    }
-
-    #top {
-        text-align: center;
-        margin: 0 auto;
-    }
-    
-    #top h1 {
-      font-size: 2em; 
-    }
-    
-    #content {
-      margin-top: 100px;
-      font-size: 2em;
-      text-align: center;
-    }
-  </style>
+  <link rel="stylesheet" type="text/css" href="style.css">
   <!-- script to get our new JS bundle from the server -->
   <script src="bundle.js"> </script>
 </head>
 <body>
+  
+  <div class="row">
+    <div class="column left" id="reviewListCol">
+      <h2>Reviews</h2>
+      <section id="reviewListSection"></section>
+    </div>
+    
+    <div class="column right" id="reviewFormCol">
+      <section id="reviewFormSection">
+        <form id="reviewForm" action="/addReview" method="post">
+          <h1>Game Name</h1>
+          <input id="nameField" type="text" name="name">
+          <h1>Genre</h1>
+          <input id="genreField" type="text" name="genre">
+          <h1>Review</h1>
+          <textarea id="reviewField" rows="10" cols="100" name="review"></textarea>
+          <h1>Score</h1>
+          <input id="scoreField" type="number" min="0" max="10" step=".25" name="score">
+          <p></p>
+          <input type="submit" value="Add Game Review">  
+        </form>  
+      </section>
+    </div>  
+    
+  </div> 
+  
   <section id="reviewSection"></section>
-  <section id="reviewListSection"></section>
-  <section id="top">
-    <form id="reviewForm" action="/addReview" method="post">
-      <h1>Game Name</h1>
-      <input id="nameField" type="text" name="name">
-      <h1>Genre</h1>
-      <input id="genreField" type="text" name="genre">
-      <h1>Review</h1>
-      <textarea id="reviewField" rows="10" cols="30" name="review"></textarea>
-      <h1>Score</h1>
-      <input id="scoreField" type="number" min="0" max="10" step=".25" name="score">
-      <p></p>
-      <input type="submit" value="Add Game Review">  
-    </form>  
-  </section>
-  <section id="confirmation"></section>
+ 
 </body>
 </html>
